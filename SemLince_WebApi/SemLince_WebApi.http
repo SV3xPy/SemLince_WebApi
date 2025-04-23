@@ -1,0 +1,6 @@
+@SemLince_WebApi_HostAddress = http://localhost:5153
+
+GET {{SemLince_WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
