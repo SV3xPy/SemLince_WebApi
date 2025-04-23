@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SemLince_Application\SemLince_Application.csproj" />
+    <ProjectReference Include="..\SemLince_Domain\SemLince_Domain.csproj" />
+  </ItemGroup>
+
 </Project>
