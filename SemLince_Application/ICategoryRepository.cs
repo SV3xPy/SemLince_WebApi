@@ -6,5 +6,8 @@ namespace SemLince_Application
     {
         List<Category> GetAllCategories();
         Category GetCategoryById(int id);
+        Category CreateCategory(Category category);
+        bool DeleteCategory(int id);
+        Category UpdateCategory(int id, Category category);
     }
 }

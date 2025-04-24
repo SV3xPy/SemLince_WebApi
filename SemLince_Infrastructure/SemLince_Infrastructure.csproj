@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SemLince_Application\SemLince_Application.csproj" />
     <ProjectReference Include="..\SemLince_Domain\SemLince_Domain.csproj" />
   </ItemGroup>

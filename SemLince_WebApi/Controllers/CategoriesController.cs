@@ -5,7 +5,7 @@ using SemLince_Domain;
 namespace SemLince_WebApi.Controllers
 {
     [ApiController]
-    [Route("api/categories")]
+    [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
     {
         private readonly ILogger<CategoriesController> _logger;
@@ -13,23 +13,59 @@ namespace SemLince_WebApi.Controllers
 
         public CategoriesController(ILogger<CategoriesController> logger, ICategoryService service)
         {
-            //_logger = logger;
+            _logger = logger;
             _categoryService = service;
         }
 
-        [HttpGet(Name = "GetAllCategories")]
+        [HttpGet]
         public ActionResult<List<Category>> GetAllCategories()
         {
-            var categoriesFromService = _categoryService.GetAllCategories();
+            List<Category> categoriesFromService = _categoryService.GetAllCategories();
             return Ok(categoriesFromService);
         }
         
-        [HttpGet()]
+        [HttpGet]
         [Route("{id}")]
         public ActionResult<Category> GetCategoryById(int id)
         {
-            var categoryFromService = _categoryService.GetCategoryById(id);
+            Category categoryFromService = _categoryService.GetCategoryById(id);
+            if(categoryFromService is null)
+            {
+                return NotFound();
+            }
             return Ok(categoryFromService);
+        }
+
+        [HttpPost]
+        public ActionResult<Category> PostCategory (Category category)
+        {
+            Category createdCategory = _categoryService.CreateCategory(category);
+            if (createdCategory is null)
+            {
+                return BadRequest();
+            }
+            return Ok(createdCategory);
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public ActionResult<Category> UpdateCategory(int id, Category category) {
+            Category updatedCategory = _categoryService.UpdateCategory(id, category);
+            if(updatedCategory is null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedCategory);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeleteCategory(int id) { 
+            bool rowsAffected = _categoryService.DeleteCategory(id);
+            if (rowsAffected) {
+                return Ok(id);
+            }
+            return NotFound();
         }
 
         /*

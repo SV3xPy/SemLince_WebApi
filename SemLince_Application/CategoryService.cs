@@ -15,12 +15,28 @@ namespace SemLince_Application
         {
             _categoryRepository = categoryRepository;
         }
+
         public List<Category> GetAllCategories()
         {
             return _categoryRepository.GetAllCategories();
         }
-        public Category GetCategoryById(int id) { 
+        public Category GetCategoryById(int id)
+        {
             return _categoryRepository.GetCategoryById(id);
+        }
+        public Category CreateCategory(Category category)
+        {
+            return _categoryRepository.CreateCategory(category);
+        }
+
+        public bool DeleteCategory(int id)
+        {
+            return _categoryRepository.DeleteCategory(id);
+        }
+
+        public Category UpdateCategory(int id, Category category)
+        {
+            return _categoryRepository.UpdateCategory(id, category);
         }
     }
 }
