@@ -29,6 +29,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICareerService, CareerService>();
 builder.Services.AddScoped<ICareerRepository, CareerRepository>();
+builder.Services.AddScoped<IBuildingService, BuildingService>();
+builder.Services.AddScoped<IBuildingRepository,BuildingRepository>();
 //builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 
 // APPLICATION DTO

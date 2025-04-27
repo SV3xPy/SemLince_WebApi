@@ -9,7 +9,7 @@ namespace SemLince_WebApi.Controllers
     public class CareerController : Controller
     {
         private readonly ILogger<CareerController> _logger;
-        private ICareerService _careersService;
+        private readonly ICareerService _careersService;
 
         public CareerController(ILogger<CareerController> logger, ICareerService careersService)
         {
@@ -46,7 +46,7 @@ namespace SemLince_WebApi.Controllers
             return Ok(createdCategory);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<Career>> UpdateCareerAsync(int id, Career career)
         {
@@ -60,7 +60,7 @@ namespace SemLince_WebApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<Career>> DeleteAsync(int id) {
+        public async Task<ActionResult<int>> DeleteAsync(int id) {
             bool rowsAffected = await _careersService.DeleteAsync(id);
             if (rowsAffected) {
                 return Ok(id);

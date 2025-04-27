@@ -31,7 +31,7 @@ namespace SemLince_Infrastructure.Repositories
                 categories.Add(new Category
                 {
                     Cat_ID = Convert.ToInt32(reader["Cat_ID"]),
-                    Cat_Nombre = reader["Cat_Nombre"].ToString()
+                    Cat_Nombre = reader["Cat_Nombre"].ToString() ?? ""
                 });
             }
 
@@ -56,7 +56,7 @@ namespace SemLince_Infrastructure.Repositories
                 return new Category
                 {
                     Cat_ID = Convert.ToInt32(reader["Cat_ID"]),
-                    Cat_Nombre = reader["Cat_Nombre"].ToString()
+                    Cat_Nombre = reader["Cat_Nombre"].ToString() ?? ""
                 };
             }
             return null;
