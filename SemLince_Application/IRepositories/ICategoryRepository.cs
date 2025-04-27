@@ -1,6 +1,6 @@
-﻿using SemLince_Domain;
+﻿using SemLince_Domain.Entities;
 
-namespace SemLince_Application
+namespace SemLince_Application.IRepositories
 {
     public interface ICategoryRepository
     {

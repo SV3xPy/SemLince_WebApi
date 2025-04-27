@@ -14,4 +14,8 @@
     <ProjectReference Include="..\SemLince_Domain\SemLince_Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+  </ItemGroup>
+
 </Project>

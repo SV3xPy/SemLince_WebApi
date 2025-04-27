@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
-using SemLince_Application;
-using SemLince_Domain;
+using SemLince_Application.IRepositories;
+using SemLince_Domain.Entities;
 
-namespace SemLince_Infrastructure
+namespace SemLince_Infrastructure.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
@@ -43,7 +43,7 @@ namespace SemLince_Infrastructure
             using var connection = _connectionFactory.CreateConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
-                CommandType = System.Data.CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure
             };
             command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 2, Direction = ParameterDirection.Input });
             command.Parameters.Add(new SqlParameter("@IdCategory", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input });
@@ -67,7 +67,7 @@ namespace SemLince_Infrastructure
             using var connection = _connectionFactory.CreateConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
-                CommandType = System.Data.CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure
             };
 
             command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 3, Direction = ParameterDirection.Input });
@@ -94,7 +94,7 @@ namespace SemLince_Infrastructure
             using var connection = _connectionFactory.CreateConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
-                CommandType = System.Data.CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure
             };
 
             command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 4, Direction = ParameterDirection.Input });
@@ -114,7 +114,7 @@ namespace SemLince_Infrastructure
             using var connection = _connectionFactory.CreateConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
-                CommandType = System.Data.CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure
             };
 
             command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 5, Direction = ParameterDirection.Input });

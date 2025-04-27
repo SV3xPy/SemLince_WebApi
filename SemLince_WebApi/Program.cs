@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using SemLince_Application;
+using SemLince_Application.IRepositories;
+using SemLince_Application.IServices;
+using SemLince_Application.Services;
 using SemLince_Infrastructure;
 using SemLince_Infrastructure.EntityFramework;
+using SemLince_Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +23,17 @@ builder.Services.AddSwaggerGen();
 //Migracion de EF
 //builder.Services.AddDbContext<CategoryDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ,
 //       b => b.MigrationsAssembly("SemLince_WebApi")));
+
 builder.Services.AddScoped<SqlConnectionFactory>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICareerService, CareerService>();
+builder.Services.AddScoped<ICareerRepository, CareerRepository>();
 //builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+
+// APPLICATION DTO
+
+
 
 var app = builder.Build();
 

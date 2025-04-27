@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SemLince_Application;
-using SemLince_Domain;
+using SemLince_Application.IServices;
+using SemLince_Domain.Entities;
 
 namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoriesController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly ILogger<CategoriesController> _logger;
+        private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ILogger<CategoriesController> logger, ICategoryService service)
+        public CategoryController(ILogger<CategoryController> logger, ICategoryService service)
         {
             _logger = logger;
             _categoryService = service;

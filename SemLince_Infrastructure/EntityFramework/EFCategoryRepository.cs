@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SemLince_Application;
-using SemLince_Domain;
+using SemLince_Application.IRepositories;
+using SemLince_Domain.Entities;
 
 namespace SemLince_Infrastructure.EntityFramework
 {
