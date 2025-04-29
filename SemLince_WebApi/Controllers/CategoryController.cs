@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SemLince_Application.IServices;
 using SemLince_Domain.Entities;
 
@@ -18,28 +20,33 @@ namespace SemLince_WebApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Category>> GetAllCategories()
+        public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
-            List<Category> categoriesFromService = _categoryService.GetAllCategories();
+            IEnumerable<Category> categoriesFromService = await _categoryService.GetAllAsync();
+            if (categoriesFromService.IsNullOrEmpty())
+            {
+                return NotFound("Actualmente dicho apartado no tiene registros.");
+            }
             return Ok(categoriesFromService);
         }
-        
+
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Category> GetCategoryById(int id)
+        public async Task<ActionResult<Category>> GetCategoryById(int id)
         {
-            Category categoryFromService = _categoryService.GetCategoryById(id);
-            if(categoryFromService is null)
+            Category categoryFromService = await _categoryService.GetByIdAsync(id);
+            if (categoryFromService is null)
             {
-                return NotFound();
+                return NotFound($"El registro con id: {id}, no se encontro. " +
+                    $"Favor de verificar e intentar de nuevo");
             }
             return Ok(categoryFromService);
         }
 
         [HttpPost]
-        public ActionResult<Category> PostCategory (Category category)
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            Category createdCategory = _categoryService.CreateCategory(category);
+            Category createdCategory = await _categoryService.AddAsync(category);
             if (createdCategory is null)
             {
                 return BadRequest();
@@ -49,23 +56,32 @@ namespace SemLince_WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<Category> UpdateCategory(int id, Category category) {
-            Category updatedCategory = _categoryService.UpdateCategory(id, category);
-            if(updatedCategory is null)
+        public async Task<ActionResult<Category>> UpdateCategory(int id, Category category)
+        {
+            if (await _categoryService.GetByIdAsync(id) is null)
             {
-                return NotFound();
+                return NotFound($"El registro con id: {id}, a actualizar no se encontro. " +
+                    $"Favor de verificar e intentar de nuevo");
+            }
+            Category updatedCategory = await _categoryService.UpdateAsync(id, category);
+            if (updatedCategory is null)
+            {
+                return BadRequest();
             }
             return Ok(updatedCategory);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeleteCategory(int id) { 
-            bool rowsAffected = _categoryService.DeleteCategory(id);
-            if (rowsAffected) {
-                return Ok(id);
+        public async Task<ActionResult> DeleteCategory(int id)
+        {
+            bool rowsAffected = await _categoryService.DeleteAsync(id);
+            if (!rowsAffected)
+            {
+                return NotFound($"El registro con id: {id}, a eliminar no se encontro." +
+                     $"Favor de verificar e intentar de nuevo");
             }
-            return NotFound();
+            return Ok(id);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using SemLince_Application.IServices;
 using SemLince_Domain.Entities;
 
@@ -21,6 +22,10 @@ namespace SemLince_WebApi.Controllers
         public async Task<ActionResult<List<Career>>> GetAllAsync()
         {
             IEnumerable<Career> careersFromService = await _careersService.GetAllAsync();
+            if (careersFromService.IsNullOrEmpty())
+            {
+                return NotFound("Actualmente dicho apartado no tiene registros.");
+            }
             return Ok(careersFromService.ToList());
         }
         [HttpGet]
@@ -30,7 +35,8 @@ namespace SemLince_WebApi.Controllers
             Career careerFromService = await _careersService.GetByIdAsync(id);
             if (careerFromService == null)
             {
-                return NotFound();
+                return NotFound($"El registro con id: {id}, no se encontro. " +
+                   $"Favor de verificar e intentar de nuevo");
             }
             return Ok(careerFromService);
         }
@@ -50,22 +56,31 @@ namespace SemLince_WebApi.Controllers
         [Route("{id}")]
         public async Task<ActionResult<Career>> UpdateCareerAsync(int id, Career career)
         {
+            if (await _careersService.GetByIdAsync(id) is null)
+            {
+                return NotFound($"El registro con id: {id}, a actualizar no se encontro. " +
+                    $"Favor de verificar e intentar de nuevo");
+            }
             Career updatedCareer = await _careersService.UpdateAsync(id, career);
             if (updatedCareer is null)
             {
-                return NotFound();
+                return BadRequest();
             }
             return Ok(updatedCareer);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<int>> DeleteAsync(int id) {
+        public async Task<ActionResult<int>> DeleteAsync(int id)
+        {
             bool rowsAffected = await _careersService.DeleteAsync(id);
-            if (rowsAffected) {
-                return Ok(id);
+            if (!rowsAffected)
+            {
+                return NotFound($"El registro con id: {id}, a eliminar no se encontro." +
+                    $"Favor de verificar e intentar de nuevo");
+
             }
-            return NotFound();
+            return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
         }
     }
 }

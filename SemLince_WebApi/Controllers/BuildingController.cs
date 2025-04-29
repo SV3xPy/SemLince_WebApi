@@ -55,7 +55,7 @@ namespace SemLince_WebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<Career>> UpdateBuildingAsync(int id, Building building)
+        public async Task<ActionResult<Building>> UpdateBuildingAsync(int id, Building building)
         {
             if (await _buildingService.GetByIdAsync(id) is null)
             {

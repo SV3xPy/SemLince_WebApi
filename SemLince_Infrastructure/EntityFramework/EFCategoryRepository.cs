@@ -18,6 +18,8 @@ namespace SemLince_Infrastructure.EntityFramework
         {
             _categoryDbContext = categoryDbContext;
         }
+        /*
+         * IMPLEMENTACION ANTERIOR SINCRONA
         public List<Category> GetAllCategories()
         {
             return _categoryDbContext.Categories.ToList();
@@ -56,6 +58,37 @@ namespace SemLince_Infrastructure.EntityFramework
             _categoryDbContext.SaveChanges();
             return oldCategory;
             throw new NotImplementedException();
+        }
+        */
+
+        public async Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return await _categoryDbContext.Categories.ToListAsync();
+        }
+
+        public async Task<Category> GetByIdAsync(int id)
+        {
+            return await _categoryDbContext.Categories.FirstOrDefaultAsync(g => g.Cat_ID == id);
+        }
+
+        public async Task<Category> AddAsync(Category entity)
+        {
+            await _categoryDbContext.Categories.AddAsync(entity);
+            await _categoryDbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public Task<Category> UpdateAsync(int id, Category entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            //Se ocupa revisar mas a detalle
+            await _categoryDbContext.Categories.Where(cat => cat.Cat_ID == id).ExecuteDeleteAsync();
+            await _categoryDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

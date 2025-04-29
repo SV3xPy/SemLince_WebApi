@@ -17,7 +17,7 @@ namespace SemLince_Application.Services
         {
             _categoryRepository = categoryRepository;
         }
-
+        /* IMPLMENTACION ANTERIOR NO ASINCRONA
         public List<Category> GetAllCategories()
         {
             return _categoryRepository.GetAllCategories();
@@ -39,6 +39,32 @@ namespace SemLince_Application.Services
         public Category UpdateCategory(int id, Category category)
         {
             return _categoryRepository.UpdateCategory(id, category);
+        }
+        */
+
+        public Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return _categoryRepository.GetAllAsync();
+        }
+
+        public Task<Category> GetByIdAsync(int id)
+        {
+            return _categoryRepository.GetByIdAsync(id);
+        }
+
+        public Task<Category> AddAsync(Category entity)
+        {
+            return _categoryRepository.AddAsync(entity);
+        }
+
+        public Task<Category> UpdateAsync(int id, Category entity)
+        {
+            return _categoryRepository.UpdateAsync(id, entity);
+        }
+
+        public Task<bool> DeleteAsync(int id)
+        {
+            return _categoryRepository.DeleteAsync(id);
         }
     }
 }
