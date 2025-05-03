@@ -5,17 +5,17 @@ namespace SemLince_Infrastructure
 {
     public class SqlConnectionFactory
     {
-        private readonly string _connectionString;
+        private readonly string _connectionStringSQLServer;
         
         public SqlConnectionFactory(IConfiguration configuration)
         {
             //Coneccion BD SqlServer
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionStringSQLServer = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public SqlConnection CreateConnection()
+        public SqlConnection CreateSqlServerConnection()
         {
-            return new SqlConnection(_connectionString);
+            return new SqlConnection(_connectionStringSQLServer);
         }
     }
 

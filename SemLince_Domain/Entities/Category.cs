@@ -8,6 +8,6 @@ namespace SemLince_Domain.Entities
         public int Cat_ID { get; set; }
         [MaxLength(60)]
         [Required]
-        public string Cat_Nombre { get; set; }
+        public required string Cat_Nombre { get; set; }
     }
 }

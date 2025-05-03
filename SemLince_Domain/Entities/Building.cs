@@ -14,7 +14,7 @@ namespace SemLince_Domain.Entities
 
         [Required]
         [MaxLength(6)]
-        public string Edi_Nombre { get; set; }
+        public required string Edi_Nombre { get; set; }
 
         [Required]
         public int Edi_Campus {  get; set; }

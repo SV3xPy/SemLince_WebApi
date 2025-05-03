@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SemLince_Application.Exceptions;
 using SemLince_Application.IServices;
 using SemLince_Domain.Entities;
 
@@ -21,66 +23,93 @@ namespace SemLince_WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Career>>> GetAllAsync()
         {
-            IEnumerable<Career> careersFromService = await _careersService.GetAllAsync();
-            if (careersFromService.IsNullOrEmpty())
+            try
             {
-                return NotFound("Actualmente dicho apartado no tiene registros.");
+                IEnumerable<Career> careersFromService = await _careersService.GetAllAsync();
+                return Ok(careersFromService.ToList());
             }
-            return Ok(careersFromService.ToList());
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<Career>> GetByIdAsync(int id)
         {
-            Career careerFromService = await _careersService.GetByIdAsync(id);
-            if (careerFromService == null)
+            try
             {
-                return NotFound($"El registro con id: {id}, no se encontro. " +
-                   $"Favor de verificar e intentar de nuevo");
+                Career careerFromService = await _careersService.GetByIdAsync(id);
+                return Ok(careerFromService);
             }
-            return Ok(careerFromService);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<Career>> PostCareerAsync(Career career)
         {
-            Career createdCategory = await _careersService.AddAsync(career);
-            if (createdCategory is null)
+            try
             {
-                return BadRequest();
+                Career createdCategory = await _careersService.AddAsync(career);
+                return Ok(createdCategory);
             }
-            return Ok(createdCategory);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<Career>> UpdateCareerAsync(int id, Career career)
         {
-            if (await _careersService.GetByIdAsync(id) is null)
+            try
             {
-                return NotFound($"El registro con id: {id}, a actualizar no se encontro. " +
-                    $"Favor de verificar e intentar de nuevo");
+                Career updatedCareer = await _careersService.UpdateAsync(id, career);
+                return Ok(updatedCareer);
             }
-            Career updatedCareer = await _careersService.UpdateAsync(id, career);
-            if (updatedCareer is null)
+            catch (NotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
-            return Ok(updatedCareer);
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult<int>> DeleteAsync(int id)
         {
-            bool rowsAffected = await _careersService.DeleteAsync(id);
-            if (!rowsAffected)
+            try
             {
-                return NotFound($"El registro con id: {id}, a eliminar no se encontro." +
-                    $"Favor de verificar e intentar de nuevo");
-
+                bool rowsAffected = await _careersService.DeleteAsync(id);
+                return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
             }
-            return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -13,6 +13,6 @@ namespace SemLince_Domain.Entities
         public int Car_ID { get; set; }
         [MaxLength(60)]
         [Required]
-        public string Car_Nombre { get; set; }
+        public required string Car_Nombre { get; set; }
     }
 }

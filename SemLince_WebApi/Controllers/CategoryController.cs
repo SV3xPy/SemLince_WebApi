@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SemLince_Application.Exceptions;
 using SemLince_Application.IServices;
 using SemLince_Domain.Entities;
 
@@ -22,66 +24,94 @@ namespace SemLince_WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
-            IEnumerable<Category> categoriesFromService = await _categoryService.GetAllAsync();
-            if (categoriesFromService.IsNullOrEmpty())
+            try
             {
-                return NotFound("Actualmente dicho apartado no tiene registros.");
+                IEnumerable<Category> categoriesFromService = await _categoryService.GetAllAsync();
+                return Ok(categoriesFromService);
             }
-            return Ok(categoriesFromService);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ActionResult<Category>> GetCategoryById(int id)
         {
-            Category categoryFromService = await _categoryService.GetByIdAsync(id);
-            if (categoryFromService is null)
+            try
             {
-                return NotFound($"El registro con id: {id}, no se encontro. " +
-                    $"Favor de verificar e intentar de nuevo");
+                Category categoryFromService = await _categoryService.GetByIdAsync(id);
+                return Ok(categoryFromService);
             }
-            return Ok(categoryFromService);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            } 
         }
 
         [HttpPost]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            Category createdCategory = await _categoryService.AddAsync(category);
-            if (createdCategory is null)
+            try
             {
-                return BadRequest();
+                Category createdCategory = await _categoryService.AddAsync(category);
+                return Ok(createdCategory);
             }
-            return Ok(createdCategory);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<ActionResult<Category>> UpdateCategory(int id, Category category)
         {
-            if (await _categoryService.GetByIdAsync(id) is null)
+            try
             {
-                return NotFound($"El registro con id: {id}, a actualizar no se encontro. " +
-                    $"Favor de verificar e intentar de nuevo");
+                Category updatedCategory = await _categoryService.UpdateAsync(id, category);
+                return Ok(updatedCategory);
             }
-            Category updatedCategory = await _categoryService.UpdateAsync(id, category);
-            if (updatedCategory is null)
+            catch (NotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
-            return Ok(updatedCategory);
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
-            bool rowsAffected = await _categoryService.DeleteAsync(id);
-            if (!rowsAffected)
+            try
             {
-                return NotFound($"El registro con id: {id}, a eliminar no se encontro." +
-                     $"Favor de verificar e intentar de nuevo");
+                await _categoryService.DeleteAsync(id);
+                return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
             }
-            return Ok(id);
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -9,24 +9,23 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BuildingController : Controller
+    public class LocationController : Controller
     {
-        private readonly ILogger<BuildingController> _logger;
-        private readonly IBuildingService _buildingService;
+        private readonly ILogger<LocationController> _logger;
+        private readonly ILocationService _locationService;
 
-        public BuildingController(ILogger<BuildingController> logger, IBuildingService buildingService)
+        public LocationController(ILogger<LocationController> logger, ILocationService locationService)
         {
             _logger = logger;
-            _buildingService = buildingService;
+            _locationService = locationService;
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<Building>>> GetAllBuildingsAsync()
+        public async Task<ActionResult<List<Location>>> GetAllLocationsAsync()
         {
             try
             {
-                IEnumerable<Building> buildingsFromService = await _buildingService.GetAllAsync();
-                return Ok(buildingsFromService.ToList());
+                IEnumerable<Location> locationsFromService = await _locationService.GetAllAsync();
+                return Ok(locationsFromService.ToList());
             }
             catch (NotFoundException ex)
             {
@@ -36,16 +35,16 @@ namespace SemLince_WebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
 
+        }
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Building>> GetBuildingByIdAsync(int id)
+        public async Task<ActionResult<Location>> GetLocationByIdAsync(int id)
         {
             try
             {
-                Building buildingFromService = await _buildingService.GetByIdAsync(id);
-                return Ok(buildingFromService);
+                Location locationFromService = await _locationService.GetByIdAsync(id);
+                return Ok(locationFromService);
             }
             catch (NotFoundException ex)
             {
@@ -56,14 +55,13 @@ namespace SemLince_WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         [HttpPost]
-        public async Task<ActionResult<Building>> PostBuildingAsync(Building building)
+        public async Task<ActionResult<Location>> PostLocationAsync(Location location)
         {
             try
             {
-                Building createdBuilding = await _buildingService.AddAsync(building);
-                return Ok(createdBuilding);
+                Location createdLocation = await _locationService.AddAsync(location);
+                return Ok(createdLocation);
             }
             catch (NotFoundException ex)
             {
@@ -73,16 +71,15 @@ namespace SemLince_WebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
 
+        }
         [HttpPut]
-        [Route("{id}")]
-        public async Task<ActionResult<Building>> UpdateBuildingAsync(int id, Building building)
+        public async Task<ActionResult<Location>> UpdateLocationAsync(int id, Location location)
         {
             try
             {
-                Building updatedBuilding = await _buildingService.UpdateAsync(id, building);
-                return Ok(updatedBuilding);
+                Location updatedLocation = await _locationService.UpdateAsync(id, location);
+                return Ok(updatedLocation);
             }
             catch (NotFoundException ex)
             {
@@ -93,14 +90,13 @@ namespace SemLince_WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<bool>> DeleteBuildingAsync(int id)
+        public async Task<ActionResult<bool>> DeleteLocationAsync(int id)
         {
             try
             {
-                await _buildingService.DeleteAsync(id);
+                bool rowsAffected = await _locationService.DeleteAsync(id);
                 return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
             }
             catch (NotFoundException ex)

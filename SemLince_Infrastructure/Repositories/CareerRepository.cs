@@ -21,7 +21,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Career> AddAsync(Career entity)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Carrera", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -45,7 +45,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Carrera", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -61,7 +61,7 @@ namespace SemLince_Infrastructure.Repositories
         public async Task<IEnumerable<Career>> GetAllAsync()
         {
             List<Career> result = [];
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Carrera", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -83,7 +83,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Career> GetByIdAsync(int id)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Carrera", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -105,7 +105,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Career> UpdateAsync(int id,Career entity)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Carrera", connection)
             {
                 CommandType = CommandType.StoredProcedure

@@ -18,7 +18,7 @@ namespace SemLince_Infrastructure.Repositories
         public List<Category> GetAllCategories()
         {
             List<Category> categories = [];
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -42,7 +42,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public Category GetCategoryById(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -66,7 +66,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public Category CreateCategory(Category category)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -93,7 +93,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public bool DeleteCategory(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -113,7 +113,7 @@ namespace SemLince_Infrastructure.Repositories
             if (GetCategoryById(id) == null) {
                 return null;
             }
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -141,7 +141,7 @@ namespace SemLince_Infrastructure.Repositories
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
             List<Category> categories = [];
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -164,7 +164,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Category> GetByIdAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -187,7 +187,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Category> AddAsync(Category entity)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -212,7 +212,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Category> UpdateAsync(int id, Category entity)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure
@@ -236,7 +236,7 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            using var connection = _connectionFactory.CreateConnection();
+            using var connection = _connectionFactory.CreateSqlServerConnection();
             using var command = new SqlCommand("SP_SemLince", connection)
             {
                 CommandType = CommandType.StoredProcedure

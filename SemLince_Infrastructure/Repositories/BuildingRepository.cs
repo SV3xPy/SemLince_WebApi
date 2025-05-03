@@ -21,14 +21,17 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Building> AddAsync(Building entity)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Edificio", connection)
             {
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Parameters =
+                {
+                    new SqlParameter("@Accion", SqlDbType.Int) { Value = 3, Direction = ParameterDirection.Input },
+                    new SqlParameter("@NameBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Nombre, Direction = ParameterDirection.Input },
+                    new SqlParameter("@CampusBuilding", SqlDbType.Int) { Value = entity.Edi_Campus, Direction = ParameterDirection.Input }
+                }
             };
-            command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 3, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@NameBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Nombre, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@CampusBuilding", SqlDbType.Int) { Value = entity.Edi_Campus, Direction = ParameterDirection.Input });
             await connection.OpenAsync();
 
             int newId = Convert.ToInt32(await command.ExecuteScalarAsync());
@@ -47,13 +50,16 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Edificio", connection)
             {
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Parameters =
+                {
+                    new SqlParameter("@Accion", SqlDbType.Int) { Value = 4, Direction = ParameterDirection.Input },
+                    new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input }
+                }
             };
-            command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 4, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input });
             await connection.OpenAsync();
 
             int rowsAffected = await command.ExecuteNonQueryAsync();
@@ -63,12 +69,15 @@ namespace SemLince_Infrastructure.Repositories
         public async Task<IEnumerable<Building>> GetAllAsync()
         {
             List<Building> result = [];
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Edificio", connection)
             {
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Parameters =
+                {
+                    new SqlParameter("@Accion", SqlDbType.Int) { Value = 1, Direction = ParameterDirection.Input }
+                }
             };
-            command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 1, Direction = ParameterDirection.Input });
             await connection.OpenAsync();
 
             using var reader = await command.ExecuteReaderAsync();
@@ -86,13 +95,17 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Building> GetByIdAsync(int id)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Edificio", connection)
             {
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Parameters =
+                {
+                    new SqlParameter("@Accion", SqlDbType.Int) { Value = 2, Direction = ParameterDirection.Input },
+                    new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input }
+
+                }
             };
-            command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 2, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input });
             await connection.OpenAsync();
             using var reader = await command.ExecuteReaderAsync();
             while (reader.Read())
@@ -109,15 +122,18 @@ namespace SemLince_Infrastructure.Repositories
 
         public async Task<Building> UpdateAsync(int id, Building entity)
         {
-            using SqlConnection connection = _connectionFactory.CreateConnection();
+            using SqlConnection connection = _connectionFactory.CreateSqlServerConnection();
             using SqlCommand command = new("SP_SemLince_Edificio", connection)
             {
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Parameters =
+                {
+                    new SqlParameter("@Accion", SqlDbType.Int) { Value = 5, Direction = ParameterDirection.Input },
+                    new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input },
+                    new SqlParameter("@NameBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Nombre, Direction = ParameterDirection.Input },
+                    new SqlParameter("@CampusBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Campus, Direction = ParameterDirection.Input }
+                }
             };
-            command.Parameters.Add(new SqlParameter("@Accion", SqlDbType.Int) { Value = 5, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@IdBuilding", SqlDbType.Int) { Value = id, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@NameBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Nombre, Direction = ParameterDirection.Input });
-            command.Parameters.Add(new SqlParameter("@CampusBuilding", SqlDbType.NVarChar) { Value = entity.Edi_Campus, Direction = ParameterDirection.Input });
             await connection.OpenAsync();
 
             int rowsAffected = await command.ExecuteNonQueryAsync();
