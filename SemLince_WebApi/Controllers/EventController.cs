@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using SemLince_Application.Exceptions;
 using SemLince_Application.IServices;
 using SemLince_Domain.Entities;
@@ -9,23 +8,23 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LocationController : Controller
+    public class EventController : Controller
     {
-        private readonly ILogger<LocationController> _logger;
-        private readonly ILocationService _locationService;
+        private readonly ILogger<EventController> _logger;
+        private readonly IEventService _eventService;
 
-        public LocationController(ILogger<LocationController> logger, ILocationService locationService)
+        public EventController(ILogger<EventController> logger, IEventService eventService)
         {
             _logger = logger;
-            _locationService = locationService;
+            _eventService = eventService;
         }
         [HttpGet]
-        public async Task<ActionResult<List<Location>>> GetAllLocationsAsync()
+        public async Task<ActionResult<List<Event>>> GetAllEventsAsync()
         {
             try
             {
-                IEnumerable<Location> locationsFromService = await _locationService.GetAllAsync();
-                return Ok(locationsFromService.ToList());
+                IEnumerable<Event> eventsFromService = await _eventService.GetAllAsync();
+                return Ok(eventsFromService.ToList());
             }
             catch (NotFoundException ex)
             {
@@ -35,16 +34,16 @@ namespace SemLince_WebApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Location>> GetLocationByIdAsync(int id)
+        public async Task<ActionResult<Event>> GetEventByIdAsync(int id)
         {
             try
             {
-                Location locationFromService = await _locationService.GetByIdAsync(id);
-                return Ok(locationFromService);
+                Event eventFromService = await _eventService.GetByIdAsync(id);
+                return Ok(eventFromService);
             }
             catch (NotFoundException ex)
             {
@@ -55,32 +54,33 @@ namespace SemLince_WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        public async Task<ActionResult<Location>> PostLocationAsync(Location location)
-        {
-            try
-            {
-                Location createdLocation = await _locationService.AddAsync(location);
-                return Ok(createdLocation);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
 
+        [HttpPost]
+        public async Task<ActionResult<Event>> PostEventAsync(Event pevent)
+        {
+            try
+            {
+                Event createdEvent = await _eventService.AddAsync(pevent);
+                return Ok(createdEvent);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult<Location>> UpdateLocationAsync(int id, Location location)
+        public async Task<ActionResult<Event>> UpdateBuildingAsync(int id, Event uevent)
         {
             try
             {
-                Location updatedLocation = await _locationService.UpdateAsync(id, location);
-                return Ok(updatedLocation);
+                Event updatedEvent = await _eventService.UpdateAsync(id, uevent);
+                return Ok(updatedEvent);
             }
             catch (NotFoundException ex)
             {
@@ -91,13 +91,14 @@ namespace SemLince_WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult<bool>> DeleteLocationAsync(int id)
+        public async Task<ActionResult<bool>> DeleteEventAsync(int id)
         {
             try
             {
-                bool rowsAffected = await _locationService.DeleteAsync(id);
+                await _eventService.DeleteAsync(id);
                 return Ok($"El registro con id: {id}, fue eliminado exitosamente.");
             }
             catch (NotFoundException ex)
