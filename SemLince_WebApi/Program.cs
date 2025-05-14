@@ -35,6 +35,8 @@ builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IPersonaService, PersonaService>();
+builder.Services.AddScoped<IPersonaRepository, PersonaRepository>();
 //builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 
 // APPLICATION DTO

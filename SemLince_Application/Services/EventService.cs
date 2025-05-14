@@ -33,7 +33,7 @@ namespace SemLince_Application.Services
             _ = await _locationRepository.GetByIdAsync(entity.Eve_IdLocation) ?? throw new ValidationException("La Ubicacion especificada no existe.");
             _ = await _careerRepository.GetByIdAsync(entity.Eve_IdCareer) ?? throw new ValidationException("La Carrera especificada no existe.");
             _ = await _categoryRepository.GetByIdAsync(entity.Eve_IdCategory) ?? throw new ValidationException("La Categoria especificada no existe.");
-            Event createdEvent = await _eventRepository.AddAsync(entity) ?? throw new ValidationException();
+            Event createdEvent = await _eventRepository.AddAsync(entity) ?? throw new Exception("Ocurrio una excepcion al insertar el registro.");
             return createdEvent;
         }
 
@@ -67,11 +67,8 @@ namespace SemLince_Application.Services
 
         public async Task<Event> UpdateAsync(int id, Event entity)
         {
-            Event eventExists = await _eventRepository.GetByIdAsync(id);
-            if (eventExists == null) {
-                throw new NotFoundException($"El registro con id: {id}, no se encontro." +
+            _ = await _eventRepository.GetByIdAsync(id) ?? throw new NotFoundException($"El registro con id: {id}, no se encontro." +
                 $"Favor de verificar e intentar de nuevo.");
-            }
             /*SE REALIZAN LAS VALIDACIONES DE LAS CLAVES FORANEAS.
             SE UTILIZA EL DESCARTE _ PORQUE LOS VALORES NO SON RELEVANTES*/
             _ = await _locationRepository.GetByIdAsync(entity.Eve_IdLocation) ?? throw new ValidationException("La Ubicacion especificada no existe.");
