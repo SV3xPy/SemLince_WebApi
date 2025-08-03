@@ -9,7 +9,7 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CareerController : Controller
+    public class CareerController : ControllerBase
     {
         private readonly ILogger<CareerController> _logger;
         private readonly ICareerService _careersService;

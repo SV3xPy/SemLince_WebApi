@@ -9,7 +9,7 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BuildingController : Controller
+    public class BuildingController : ControllerBase
     {
         private readonly ILogger<BuildingController> _logger;
         private readonly IBuildingService _buildingService;

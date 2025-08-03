@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SemLince_Application.Exceptions;
 using SemLince_Application.IServices;
@@ -8,7 +10,7 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PersonaController : Controller
+    public class PersonaController : ControllerBase
     {
         private readonly ILogger<PersonaController> _logger;
         private readonly IPersonaService _personaService;
@@ -68,6 +70,10 @@ namespace SemLince_WebApi.Controllers
         {
             try
             {
+                var hashedPassword = new PasswordHasher<Persona>()
+                    .HashPassword(persona, persona.Per_Password);
+
+                persona.Per_Password = hashedPassword;
                 Persona createdPersona = await _personaService.AddAsync(persona);
                 return Ok(createdPersona);
             }

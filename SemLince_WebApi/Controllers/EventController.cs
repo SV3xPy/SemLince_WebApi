@@ -8,7 +8,7 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EventController : Controller
+    public class EventController : ControllerBase
     {
         private readonly ILogger<EventController> _logger;
         private readonly IEventService _eventService;

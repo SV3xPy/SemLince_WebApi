@@ -1,10 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using SemLince_Application.IRepositories;
 using SemLince_Application.IServices;
 using SemLince_Application.Services;
 using SemLince_Infrastructure;
-using SemLince_Infrastructure.EntityFramework;
 using SemLince_Infrastructure.Repositories;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +16,7 @@ ConfigurationManager configuration = builder.Configuration;
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
 
 //Injeccion de dependencias
 //Migracion de EF
@@ -48,8 +47,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapScalarApiReference();
+    app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();

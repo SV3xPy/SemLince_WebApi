@@ -9,7 +9,7 @@ namespace SemLince_WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LocationController : Controller
+    public class LocationController : ControllerBase
     {
         private readonly ILogger<LocationController> _logger;
         private readonly ILocationService _locationService;
