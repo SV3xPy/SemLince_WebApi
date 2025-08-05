@@ -1,9 +1,7 @@
-using SemLince_Application.IRepositories;
 using SemLince_Application.IServices;
 using SemLince_Application.Services;
-using SemLince_Infrastructure;
-using SemLince_Infrastructure.Repositories;
 using Scalar.AspNetCore;
+using SemLince_Infrastructure.Container;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,19 +21,20 @@ builder.Services.AddOpenApi();
 //builder.Services.AddDbContext<CategoryDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ,
 //       b => b.MigrationsAssembly("SemLince_WebApi")));
 
-builder.Services.AddScoped<SqlConnectionFactory>();
+InfrastructureConfigureServiceContainer.AddRepositories(builder.Services);
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 builder.Services.AddScoped<ICareerService, CareerService>();
-builder.Services.AddScoped<ICareerRepository, CareerRepository>();
+
 builder.Services.AddScoped<IBuildingService, BuildingService>();
-builder.Services.AddScoped<IBuildingRepository,BuildingRepository>();
+
 builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+
 builder.Services.AddScoped<IEventService, EventService>();
-builder.Services.AddScoped<IEventRepository, EventRepository>();
+
 builder.Services.AddScoped<IPersonaService, PersonaService>();
-builder.Services.AddScoped<IPersonaRepository, PersonaRepository>();
+
 //builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 
 // APPLICATION DTO
